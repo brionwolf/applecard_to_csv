@@ -15,7 +15,7 @@ print("Total pages: {total}".format(total=total_pages))
 
 # Convert pdf statement to readable text
 pages_with_transactions = []
-transactions_list = []
+filtered_data_list = []
 for page in range(total_pages):
   page_text = pdf_object.getPage(page).extractText()
   page_items = page_text.splitlines()
@@ -32,11 +32,16 @@ for page in range(total_pages):
 
   if start_first_row and end_last_row:
     pages_with_transactions.append(page_numbering)
-    transactions_list.extend(page_items[start_first_row:end_last_row])
+    filtered_data_list.extend(page_items[start_first_row:end_last_row])
 
 print("Pages with transacrions: {filtered}".format(filtered=len(pages_with_transactions)))
 pdf_document.close()
 
-# Translate text information for csv format
+# Translate text information for csv-able format
+def divide_chunks(input_list):
+  for item in range(0, len(input_list), 5):
+    yield input_list[item:item + 5]
+
+transactions_list = list(divide_chunks(filtered_data_list))
 
 # export as csv
