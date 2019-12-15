@@ -1,3 +1,3 @@
 # appleCard to csv
 
-Exported pdfs are saved to this directory.
+Exported csv documents are saved to this directory.
