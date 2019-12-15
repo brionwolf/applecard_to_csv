@@ -2,19 +2,24 @@
 # Imports
 import PyPDF2
 
-# Import AppleCard pdf statement
-applecard_pdf = open(input("Location of pdf: "), 'rb')
-ac_obj = PyPDF2.PdfFileReader(applecard_pdf)
-ac_total_pages = ac_obj.numPages
+print("Start: Apple Card Statements to CSV")
+print("-----------------------------------")
 
-print("Number of pages: {pages}".format(pages=ac_total_pages))
+# Import AppleCard pdf statement
+pdf_document = open(input("Location of pdf: "), 'rb')
+pdf_object = PyPDF2.PdfFileReader(pdf_document)
+total_pages = pdf_object.numPages
+
+print("PDF document imported: {pdf_doc}".format(pdf_doc=pdf_document.name))
+print("Total pages: {total}".format(total=total_pages))
 
 # Convert pdf statement to readable text
-transation_tables = []
-for page in range(ac_total_pages):
-  page_text = ac_obj.getPage(page).extractText()
+pages_with_transactions = []
+transactions_list = []
+for page in range(total_pages):
+  page_text = pdf_object.getPage(page).extractText()
   page_items = page_text.splitlines()
-  page_numbering = "Page {page} /{ac_total_pages}".format(page=page + 1, ac_total_pages=ac_total_pages)
+  page_numbering = "Page {page} /{total_pages}".format(page=page + 1, total_pages=total_pages)
   start_first_row = None
   end_last_row = None
 
@@ -26,9 +31,11 @@ for page in range(ac_total_pages):
     end_last_row = page_items.index(page_numbering)
 
   if start_first_row and end_last_row:
-    transation_tables.extend(page_items[start_first_row:end_last_row])
+    pages_with_transactions.append(page_numbering)
+    transactions_list.extend(page_items[start_first_row:end_last_row])
 
-applecard_pdf.close()
+print("Pages with transacrions: {filtered}".format(filtered=len(pages_with_transactions)))
+pdf_document.close()
 
 # Translate text information for csv format
 
