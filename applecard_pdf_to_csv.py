@@ -10,12 +10,15 @@ ac_total_pages = ac_obj.numPages
 print("Number of pages: {pages}".format(pages=ac_total_pages))
 
 # Convert pdf statement to readable text
-
+transation_tables = []
 for page in range(ac_total_pages):
-  print("PAGE NUMBER: {page_num}".format(page_num=page))
   page_text = ac_obj.getPage(page).extractText()
-  print(page_text)
-  print("\n")
+  page_items = page_text.splitlines()
+
+  if "Transactions" in page_items:
+    start_first_row = page_items.index("Transactions") + 5
+
+    transation_tables.extend(page_items[start_first_row:])
 
 applecard_pdf.close()
 
