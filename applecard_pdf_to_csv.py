@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # Imports
 import PyPDF2
+import csv
+from datetime import datetime
+from os import path
 
 print("Start: Apple Card Statements to CSV")
 print("-----------------------------------")
@@ -34,7 +37,7 @@ for page in range(total_pages):
     pages_with_transactions.append(page_numbering)
     filtered_data_list.extend(page_items[start_first_row:end_last_row])
 
-print("Pages with transacrions: {filtered}".format(filtered=len(pages_with_transactions)))
+print("Pages with transactions: {filtered}".format(filtered=len(pages_with_transactions)))
 pdf_document.close()
 
 # Translate text information for csv-able format
@@ -45,3 +48,19 @@ def divide_chunks(input_list):
 transactions_list = list(divide_chunks(filtered_data_list))
 
 # export as csv
+
+print("Saving CSV document of transactions...")
+
+csv_file_name = "applecard-expenses-{date}.csv".format(date=datetime.now().strftime("%Y-%m-%d-%H%M%S%f"))
+csv_path = "export/" + csv_file_name
+with open(csv_path, mode='w') as csv_file:
+  csv_writer = csv.writer(csv_file)
+
+  csv_writer.writerow(['Date', 'Description', 'DC Percentage', 'DC Value', 'Amount'])
+  csv_writer.writerows(transactions_list)
+
+if path.exists(csv_path):
+  print("CSV document saved to: {csv_path}".format(csv_path=csv_path))
+else:
+  print("There was an issue saving the CSV document.")
+  print("Check the `export/` directory to verify no document was created, and try again.")
