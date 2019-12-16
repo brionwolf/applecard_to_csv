@@ -2,19 +2,22 @@
 # Imports
 import PyPDF2
 import csv
+import logging
 from datetime import datetime
 from os import path
 
-print("Start: Apple Card Statements to CSV")
-print("-----------------------------------")
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+logging.info("Start: Apple Card Statements to CSV")
+logging.info("-----------------------------------")
 
 # Import AppleCard pdf statement
 pdf_document = open(input("Location of pdf: "), 'rb')
 pdf_object = PyPDF2.PdfFileReader(pdf_document)
 total_pages = pdf_object.numPages
 
-print("PDF document imported: {pdf_doc}".format(pdf_doc=pdf_document.name))
-print("Total pages: {total}".format(total=total_pages))
+logging.info("PDF document imported: {pdf_doc}".format(pdf_doc=pdf_document.name))
+logging.info("Total pages: {total}".format(total=total_pages))
 
 # Convert pdf statement to readable text
 pages_with_transactions = []
@@ -37,7 +40,7 @@ for page in range(total_pages):
     pages_with_transactions.append(page_numbering)
     filtered_data_list.extend(page_items[start_first_row:end_last_row])
 
-print("Pages with transactions: {filtered}".format(filtered=len(pages_with_transactions)))
+logging.info("Pages with transactions: {filtered}".format(filtered=len(pages_with_transactions)))
 pdf_document.close()
 
 # Translate text information for csv-able format
@@ -49,7 +52,7 @@ transactions_list = list(divide_chunks(filtered_data_list))
 
 # export as csv
 
-print("Saving CSV document of transactions...")
+logging.info("Saving CSV document of transactions...")
 
 csv_file_name = "applecard-expenses-{date}.csv".format(date=datetime.now().strftime("%Y-%m-%d-%H%M%S%f"))
 csv_path = "export/" + csv_file_name
@@ -60,7 +63,7 @@ with open(csv_path, mode='w') as csv_file:
   csv_writer.writerows(transactions_list)
 
 if path.exists(csv_path):
-  print("CSV document saved to: {csv_path}".format(csv_path=csv_path))
+  logging.info("CSV document saved to: {csv_path}".format(csv_path=csv_path))
 else:
-  print("There was an issue saving the CSV document.")
-  print("Check the `export/` directory to verify no document was created, and try again.")
+  logging.error("There was an issue saving the CSV document.")
+  logging.error("Check the `export/` directory to verify no document was created, and try again.")
