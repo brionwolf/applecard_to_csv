@@ -55,7 +55,7 @@ transactions_list = list(divide_chunks(filtered_data_list))
 logging.info("Saving CSV document of transactions...")
 
 csv_file_name = "applecard-expenses-{date}.csv".format(date=datetime.now().strftime("%Y-%m-%d-%H%M%S%f"))
-csv_path = "export/" + csv_file_name
+csv_path = "_export/" + csv_file_name
 with open(csv_path, mode='w') as csv_file:
   csv_writer = csv.writer(csv_file)
 
