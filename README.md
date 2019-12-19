@@ -6,7 +6,7 @@ I was frustrated that the Apple Credit Card Statement I get on a monthly basis w
 
 * `$ python applecard_pdf_to_csv.py`
 * `> Location of pdf: [exact_path_to/credit_card_statement.pdf]`
-* Documents created successfully are saved to a local `export/` directory.
+* Documents created successfully are saved to a local `_export/` directory.
 
 ## Notes
 
