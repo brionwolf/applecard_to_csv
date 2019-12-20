@@ -10,4 +10,5 @@ I was frustrated that the Apple Credit Card Statement I get on a monthly basis w
 
 ## Notes
 
-One of my main concerns was privacy, so this script uses only built in python libraries, and all the data processing/parsing is done locally.
+* Python Version: `3.8.0` using [pyenv](https://github.com/pyenv/pyenv)
+* One of my main concerns was privacy, so this script uses only built in python libraries, and all the data processing/parsing is done locally.  
